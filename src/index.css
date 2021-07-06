@@ -11,3 +11,115 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.select-username {
+  width: 300px;
+  margin: 200px auto 0;
+}
+.left-panel {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 150px;
+  overflow-x: hidden;
+  background-color: #3f0e40;
+  color: white;
+}
+.left-room-panel {
+  position: fixed;
+  left: 150px;
+  top: 0;
+  bottom: 0;
+  width: 150px;
+  overflow-x: hidden;
+  background-color: #bd4bbf;
+  color: white;
+}
+
+.right-panel {
+  margin-left: 200px;
+}
+
+.right-room-panel {
+  margin-left: 100px;
+}
+
+.header {
+  line-height: 40px;
+  padding: 10px 20px;
+  border-bottom: 1px solid #dddddd;
+}
+
+.messages {
+  margin: 0;
+  padding: 20px;
+}
+
+.message {
+  list-style: none;
+}
+
+.sender {
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.form {
+  padding: 10px;
+}
+
+.input {
+  width: 80%;
+  resize: none;
+  padding: 10px;
+  line-height: 1.5;
+  border-radius: 5px;
+  border: 1px solid #000;
+}
+
+.send-button {
+  vertical-align: top;
+}
+.selected {
+  background-color: #1164a3;
+}
+
+.user {
+  padding: 10px;
+  cursor: pointer;
+}
+.user:hover{
+  background-color: honeydew;
+  color:black;
+}
+
+.description {
+  display: inline-block;
+}
+
+.status {
+  color: #92959e;
+}
+
+.new-messages {
+  color: white;
+  background-color: red;
+  width: 20px;
+  border-radius: 5px;
+  text-align: center;
+  float: right;
+  margin-top: 10px;
+}
+.icon {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: #e38968;
+  margin-right: 6px;
+}
+
+.icon.connected {
+  background-color: #86bb71;
+}
