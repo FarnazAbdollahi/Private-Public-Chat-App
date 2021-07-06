@@ -2,18 +2,18 @@ import React, { useEffect, useState } from "react";
 import MessagePanel from "./containers/MessagePanel";
 import UserPanel from "./containers/UserPanel";
 import RoomPanel from "./RoomPanel";
-import socket from "./socket";
+import { socket } from "./socket";
 
 const Chat = () => {
+
   const [showRoom, setShowRoom] = useState(false)
-  const [roomUsers, setRoomUsers] = useState([])
   const [messages, setMessages] = useState([])
 
   const [myUsers, setMyUsers] = useState([])
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedRoom, setSelectedRoom] = useState(null);
 
-  const rooms = ["movies"]
+  const rooms = ["movies", "programming", "books"]
 
   const onMessage = (content) => {
     if (selectedUser) {
@@ -35,7 +35,7 @@ const Chat = () => {
     setSelectedUser(user);
   };
 
-  const onSelectRoom = () => {
+  const roomsHandler = () => {
     setShowRoom(true)
     setSelectedUser("");
 
@@ -45,17 +45,16 @@ const Chat = () => {
   const setSelectedRoomHandler = (room) => {
     setSelectedRoom(room)
     socket.emit("create", room)
+    window.history.pushState("", "", `/${room}`);
 
   }
 
 
   const onPublicMessage = (room, content) => {
-    console.log(room, content)
     socket.emit('sendMessage', { room, content })
     var cu = myUsers.find((item) => {
       return item.self === true
     })
-    console.log(cu)
     setMessages((p) => ([...p, { user: cu.username, room: room, message: content }]))
   }
 
@@ -114,6 +113,7 @@ const Chat = () => {
       })
     });
 
+
     socket.on("user connected", (user) => {
       for (let i = 0; i < myUsers.length; i++) {
         const existingUser = myUsers[i];
@@ -140,10 +140,15 @@ const Chat = () => {
     });
 
     socket.on("sendMessage", message => {
-      console.log("!", message)
+      // console.log("!", message)
       setMessages((prevState) => ([...prevState, message]))
     });
 
+    socket.on("allMessages", all => {
+      setMessages(all)
+    })
+
+    
     socket.on("private message", ({ content, from }) => {
       var temp = myUsers
 
@@ -163,16 +168,6 @@ const Chat = () => {
       setMyUsers(temp)
     });
 
-
-    // socket.on("all messages", (messages) => {
-    //   console.log("message socket", messages)
-    //   setMessages(messages)
-    // })
-
-
-
-
-
     return () => {
       socket.off("connect");
       socket.off("disconnect");
@@ -181,15 +176,16 @@ const Chat = () => {
       socket.off("user disconnected");
       socket.off("private message");
       socket.off("sendMessage");
+
     };
   }, [socket, selectedUser, myUsers]);
 
-  console.log("messages", messages)
+  // console.log("messages", messages)
 
   return (
     <div>
       <div className="left-panel">
-        <div className={`user `} onClick={() => onSelectRoom()}>
+        <div className={`user `} onClick={() => roomsHandler()}>
           <div className="description">
             <div className="name">
               Rooms
@@ -211,7 +207,7 @@ const Chat = () => {
       <div className="right-panel">
         {showRoom ? <RoomPanel
           rooms={rooms} selectedRoom={selectedRoom} setSelectedRoom={setSelectedRoomHandler} onPublicMessage={onPublicMessage}
-          messages={messages}
+          messages={messages} 
         /> :
           selectedUser ? (
             <MessagePanel user={selectedUser} onMessage={onMessage} />

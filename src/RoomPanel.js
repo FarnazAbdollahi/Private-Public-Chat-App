@@ -1,7 +1,7 @@
 import ChatPanel from "./containers/ChatPanel";
 import Rooms from "./containers/Rooms"
 
-const RoomPanel = ({ rooms, selectedRoom, setSelectedRoom, onPublicMessage, messages }) => {
+const RoomPanel = ({ rooms, selectedRoom, setSelectedRoom, onPublicMessage, messages}) => {
     return <div>
         <div className="left-room-panel">
             {rooms.map((room, index) => {

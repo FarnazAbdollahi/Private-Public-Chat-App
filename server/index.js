@@ -95,14 +95,24 @@ io.on("connection", (socket) => {
     messageStore.saveMessage(message);
   });
 
-  const msgs = []
   socket.on('create', (room) => {
     socket.join(room)
+    console.log(socket.username)
+    // messageStore.findMessagesPerRoom(room).forEach((message) => msgs.push(message))
+    // socket.to(socket.userID).to(socket.username).emit('olderMessages', messageStore.findMessagesPerRoom(room))
   })
 
+  const msgs = []
+  messageStore.findPublicMessages().forEach((elem)=>msgs.push(elem))
+  socket.emit("allMessages", msgs);
+
   socket.on('sendMessage', ({ room, content }) => {
-    msgs.push({room:room, message:content, user:socket.username})
-    socket.to(room).emit('sendMessage', { room: room, user: socket.username, message: content });
+    const message = { room: room, user: socket.username, message: content }
+    // io.of(`/${room}`).to(room).emit('sendMessage', message);
+    // console.log(room)
+    socket.to(room).emit('sendMessage', message);
+    messageStore.savePublicMessages(message);
+
   })
 
 

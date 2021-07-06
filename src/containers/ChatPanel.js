@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react"
 const ChatPanel = ({ messages, selectedRoom, onPublicMessage }) => {
     const [content, setContent] = useState("")
-    console.log("chat", messages)
     return < div >
         <header>
             <h1>{selectedRoom}</h1>
         </header>
         <ul className="messages">
+           
             {messages ?
                 messages.filter((item) => {
                     return item.room === selectedRoom
                 }).map((message, index) => {
                     return <li
+                    key={index}
                         className="message"
                     > <div className="sender">
                             <span>Sender: </span> {message.user}
